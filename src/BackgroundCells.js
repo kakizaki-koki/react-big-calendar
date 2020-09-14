@@ -7,6 +7,7 @@ import * as dates from './utils/dates'
 import { notify } from './utils/helpers'
 import { dateCellSelection, getSlotAtX, pointInBox } from './utils/selection'
 import Selection, { getBoundsForNode, isEvent } from './Selection'
+import { startOf } from './../node_modules/date-arithmetic/index'
 
 class BackgroundCells extends React.Component {
   constructor(props, context) {
@@ -42,24 +43,57 @@ class BackgroundCells extends React.Component {
     } = this.props
     let { selecting, startIdx, endIdx } = this.state
     let current = getNow()
-
-    return (
-      <div className="rbc-row-bg">
-        {range.map((date, index) => {
-          let selected = selecting && index >= startIdx && index <= endIdx
-          const { className, style } = getters.dayProp(date)
-
+    
+    const startDay = this.props.companyStartDay
+      if (startDay !== 1) {
+        let startDate = new Date(currentDate)
+        startDate.setMonth(startDate.getMonth() - 1)
+        startDate.setDate(startDay)
+        let endDate = new Date(currentDate)
+        endDate.setDate(startDay - 1)
+        startDate = startOf(startDate, 'day')
+        endDate = startOf(endDate, 'day')
           return (
-            <Wrapper key={index} value={date} range={range}>
-              <div
-                style={style}
-                className={clsx(
-                  'rbc-day-bg',
-                  className,
-                  selected && 'rbc-selected-cell',
-                  dates.eq(date, current, 'day') && 'rbc-today',
-                  currentDate &&
-                    dates.month(currentDate) !== dates.month(date) &&
+            <div className="rbc-row-bg">
+              {range.map((date, index) => {
+                let selected = selecting && index >= startIdx && index <= endIdx
+                const { className, style } = getters.dayProp(date)
+    
+                return (
+                  <Wrapper key={index} value={date} range={range}>
+                    <div
+                      style={style}
+                      className={clsx(
+                        'rbc-day-bg',
+                        className,
+                        selected && 'rbc-selected-cell',
+                        dates.eq(date, current, 'day') && 'rbc-today',
+                        currentDate && date < startDate && 'rbc-off-range-bg',
+                        currentDate && endDate < date && 'rbc-off-range-bg'
+                    )}
+                  />
+                </Wrapper>
+              )
+            })}
+          </div>
+        )} else {
+      return (
+        <div className="rbc-row-bg">
+          {range.map((date, index) => {
+            let selected = selecting && index >= startIdx && index <= endIdx
+            const { className, style } = getters.dayProp(date)
+
+            return (
+              <Wrapper key={index} value={date} range={range}>
+                <div
+                  style={style}
+                  className={clsx(
+                    'rbc-day-bg',
+                    className,
+                    selected && 'rbc-selected-cell',
+                    dates.eq(date, current, 'day') && 'rbc-today',
+                    currentDate &&
+                      dates.month(currentDate) !== dates.month(date) &&
                     'rbc-off-range-bg'
                 )}
               />
@@ -67,7 +101,7 @@ class BackgroundCells extends React.Component {
           )
         })}
       </div>
-    )
+    )}
   }
 
   _selectable() {
@@ -168,6 +202,7 @@ class BackgroundCells extends React.Component {
 BackgroundCells.propTypes = {
   date: PropTypes.instanceOf(Date),
   getNow: PropTypes.func.isRequired,
+  companyStartDay: PropTypes.number,
 
   getters: PropTypes.object.isRequired,
   components: PropTypes.object.isRequired,
