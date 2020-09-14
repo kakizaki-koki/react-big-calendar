@@ -140,6 +140,7 @@ class DateContentRow extends React.Component {
     return (
       <div className={className}>
         <BackgroundCells
+          companyStartDay={this.props.companyStartDay}
           date={date}
           getNow={getNow}
           rtl={rtl}
@@ -154,6 +155,7 @@ class DateContentRow extends React.Component {
           longPressThreshold={longPressThreshold}
           resourceId={resourceId}
         />
+        
 
         <div className="rbc-row-content">
           {renderHeader && (
@@ -183,6 +185,7 @@ DateContentRow.propTypes = {
   date: PropTypes.instanceOf(Date),
   events: PropTypes.array.isRequired,
   range: PropTypes.array.isRequired,
+  companyStartDay: PropTypes.number,
 
   rtl: PropTypes.bool,
   resourceId: PropTypes.any,

@@ -784,8 +784,8 @@ class Calendar extends React.Component {
     resourceIdAccessor,
     resourceTitleAccessor,
     eventPropGetter,
-	slotPropGetter,
-	slotGroupPropGetter,
+    slotPropGetter,
+  	slotGroupPropGetter,
     dayPropGetter,
     view,
     views,
@@ -938,6 +938,7 @@ class Calendar extends React.Component {
   }
 
   /**
+   * 
    *
    * @param date
    * @param viewComponent

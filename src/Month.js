@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import PropTypes from 'prop-types'
 import React from 'react'
 import { findDOMNode } from 'react-dom'
@@ -18,6 +19,7 @@ import Header from './Header'
 import DateHeader from './DateHeader'
 
 import { inRange, sortEvents } from './utils/eventLevels'
+import { startOf } from './../node_modules/date-arithmetic/index'
 
 let eventsForWeek = (evts, start, end, accessors) =>
   evts.filter(e => inRange(e, start, end, accessors))
@@ -73,8 +75,9 @@ class MonthView extends React.Component {
   }
 
   render() {
-    let { date, localizer, className } = this.props,
-      month = dates.visibleDays(date, localizer),
+    const startDay = this.props.companyStartDay
+    let { date, localizer, className,} = this.props,
+      month = dates.visibleDays(date, localizer, startDay),
       weeks = chunk(month, 7)
 
     this._weekCount = weeks.length
@@ -112,6 +115,7 @@ class MonthView extends React.Component {
 
     return (
       <DateContentRow
+        companyStartDay={this.props.companyStartDay}
         key={weekIdx}
         ref={weekIdx === 0 ? this.slotRowRef : undefined}
         container={this.getContainer}
@@ -140,7 +144,7 @@ class MonthView extends React.Component {
   }
 
   readerDateHeading = ({ date, className, ...props }) => {
-    let { date: currentDate, getDrilldownView, localizer } = this.props
+    let { date: currentDate, getDrilldownView, localizer} = this.props
 
     let isOffRange = dates.month(date) !== dates.month(currentDate)
     let isCurrent = dates.eq(date, currentDate, 'day')
@@ -148,7 +152,35 @@ class MonthView extends React.Component {
     let label = localizer.format(date, 'dateFormat')
     let DateHeaderComponent = this.props.components.dateHeader || DateHeader
 
-    return (
+    const startDay = this.props.companyStartDay
+    if (startDay !== 1) {
+      let startDate = new Date(currentDate)
+      startDate.setMonth(startDate.getMonth() - 1)
+      startDate.setDate(startDay)
+      let endDate = new Date(currentDate)
+      endDate.setDate(startDay - 1)
+      startDate = startOf(startDate, 'day')
+      endDate = startOf(endDate, 'day')
+      return (
+         <div
+        {...props}
+        className={clsx(
+          className,
+          date < startDate && 'rbc-off-range',
+          endDate < date && 'rbc-off-range',
+          isCurrent && 'rbc-current'
+        )}
+      >
+        <DateHeaderComponent
+          label={label}
+          date={date}
+          drilldownView={drilldownView}
+          isOffRange={isOffRange}
+          onDrillDown={e => this.handleHeadingClick(date, drilldownView, e)}
+        />
+      </div>
+    )} else {
+      return (
       <div
         {...props}
         className={clsx(
@@ -166,6 +198,7 @@ class MonthView extends React.Component {
         />
       </div>
     )
+    }
   }
 
   renderHeaders(row) {
@@ -305,8 +338,10 @@ class MonthView extends React.Component {
 }
 
 MonthView.propTypes = {
+
   events: PropTypes.array.isRequired,
   date: PropTypes.instanceOf(Date),
+  companyStartDay: PropTypes.number,
 
   min: PropTypes.instanceOf(Date),
   max: PropTypes.instanceOf(Date),
