@@ -746,6 +746,7 @@ class Calendar extends React.Component {
     views: [views.MONTH, views.WEEK, views.DAY, views.AGENDA],
     step: 30,
     length: 30,
+    companyStartDay: 1,
 
     drilldownView: views.DAY,
 
