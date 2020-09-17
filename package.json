@@ -1,14 +1,14 @@
 {
-  "name": "react-big-calendar",
+  "name": "@zvc/react-big-calendar",
   "version": "0.23.0",
   "description": "Calendar! with events",
   "author": {
-    "name": "Jason Quense",
-    "email": "monastic.panic@gmail.com"
+    "name": "Kakizaki Koki",
+    "email": "kakizaki.koki@zeevaa.com"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jquense/react-big-calendar.git"
+    "url": "git+https://github.com/kakizaki-koki/react-big-calendar.git"
   },
   "license": "MIT",
   "main": "lib/index.js",
@@ -49,7 +49,8 @@
     "test": "npm run lint && jest",
     "tdd": "jest --watch",
     "release": "rollout",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "yarn aws:login && npm run build",
+    "aws:login": "aws codeartifact login --tool npm --repository zeevaa --domain zeevaa --domain-owner 643321528521",
     "prettier": "prettier '**/*js' !examples/bundle.js '!lib/**' --write ",
     "precommit": "lint-staged"
   },
