@@ -50,7 +50,7 @@
     "tdd": "jest --watch",
     "release": "rollout",
     "prepublishOnly": "yarn aws:login && npm run build",
-    "aws:login": "aws codeartifact login --tool npm --repository zeevaa --domain zeevaa --domain-owner 643321528521",
+    "aws:login": "aws codeartifact login --tool npm --repository attendance --domain zeevaa --domain-owner 285217652119 --profile workplace",
     "prettier": "prettier '**/*js' !examples/bundle.js '!lib/**' --write ",
     "precommit": "lint-staged"
   },
