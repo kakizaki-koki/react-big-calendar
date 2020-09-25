@@ -15,9 +15,12 @@ const ColoredDateCellWrapper = ({ children }) =>
 let Basic = ({ localizer }) => (
   <Calendar
     companyStartDay={21}
+    companyHoliday={[new Date(2015, 2, 25),new Date(2015, 2, 26)]}
+    japaneseHoliday={[new Date(2015, 3, 2),new Date(2015, 3, 3)]}
     events={events}
     views={allViews}
     step={60}
+    selectable
     showMultiDayTimes
     max={dates.add(dates.endOf(new Date(2015, 17, 1), 'day'), -1, 'hours')}
     defaultDate={new Date(2015, 3, 1)}

@@ -8,6 +8,7 @@ import { notify } from './utils/helpers'
 import { dateCellSelection, getSlotAtX, pointInBox } from './utils/selection'
 import Selection, { getBoundsForNode, isEvent } from './Selection'
 import { startOf } from './../node_modules/date-arithmetic/index'
+import moment from 'moment'
 
 class BackgroundCells extends React.Component {
   constructor(props, context) {
@@ -31,6 +32,22 @@ class BackgroundCells extends React.Component {
 
     if (!nextProps.selectable && this.props.selectable)
       this._teardownSelectable()
+  }
+  
+  holidayCell(date) {
+    const companyHoliday = this.props.companyHoliday
+    const japaneseHoliday = this.props.japaneseHoliday
+    const seekHoliday = companyHoliday.find(holiday => moment(holiday).format('YYYY/MM/DD') === moment(date).format('YYYY/MM/DD'))
+    const seekjapaneseHoliday = japaneseHoliday.find(holiday => moment(holiday).format('YYYY/MM/DD') === moment(date).format('YYYY/MM/DD'))
+    if(seekHoliday){
+      return false
+    } else if(seekjapaneseHoliday){
+      return false
+    }else if(date && 1 <= moment(date).day() && moment(date).day() <= 5){
+      return true
+    } else {
+      return false
+    }
   }
 
   render() {
@@ -58,7 +75,6 @@ class BackgroundCells extends React.Component {
               {range.map((date, index) => {
                 let selected = selecting && index >= startIdx && index <= endIdx
                 const { className, style } = getters.dayProp(date)
-    
                 return (
                   <Wrapper key={index} value={date} range={range}>
                     <div
@@ -66,7 +82,7 @@ class BackgroundCells extends React.Component {
                       className={clsx(
                         'rbc-day-bg',
                         className,
-                        selected && 'rbc-selected-cell',
+                        selected && endDate >= date && startDate <= date && this.holidayCell(date) && 'rbc-selected-cell',
                         dates.eq(date, current, 'day') && 'rbc-today',
                         currentDate && date < startDate && 'rbc-off-range-bg',
                         currentDate && endDate < date && 'rbc-off-range-bg'
@@ -90,7 +106,8 @@ class BackgroundCells extends React.Component {
                   className={clsx(
                     'rbc-day-bg',
                     className,
-                    selected && 'rbc-selected-cell',
+                    // selected && 'rbc-selected-cell',
+                    selected && dates.month(currentDate) === dates.month(date) && this.holidayCell(date) && 'rbc-selected-cell',
                     dates.eq(date, current, 'day') && 'rbc-today',
                     currentDate &&
                       dates.month(currentDate) !== dates.month(date) &&
@@ -203,6 +220,8 @@ BackgroundCells.propTypes = {
   date: PropTypes.instanceOf(Date),
   getNow: PropTypes.func.isRequired,
   companyStartDay: PropTypes.number,
+  companyHoliday: PropTypes.array,
+  japaneseHoliday: PropTypes.array,
 
   getters: PropTypes.object.isRequired,
   components: PropTypes.object.isRequired,

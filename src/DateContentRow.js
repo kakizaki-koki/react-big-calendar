@@ -141,6 +141,8 @@ class DateContentRow extends React.Component {
       <div className={className}>
         <BackgroundCells
           companyStartDay={this.props.companyStartDay}
+          companyHoliday={this.props.companyHoliday}
+          japaneseHoliday={this.props.japaneseHoliday}
           date={date}
           getNow={getNow}
           rtl={rtl}
@@ -186,6 +188,8 @@ DateContentRow.propTypes = {
   events: PropTypes.array.isRequired,
   range: PropTypes.array.isRequired,
   companyStartDay: PropTypes.number,
+  companyHoliday: PropTypes.array,
+  japaneseHoliday: PropTypes.array,
 
   rtl: PropTypes.bool,
   resourceId: PropTypes.any,

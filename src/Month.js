@@ -116,6 +116,8 @@ class MonthView extends React.Component {
     return (
       <DateContentRow
         companyStartDay={this.props.companyStartDay}
+        companyHoliday={this.props.companyHoliday}
+        japaneseHoliday={this.props.japaneseHoliday}
         key={weekIdx}
         ref={weekIdx === 0 ? this.slotRowRef : undefined}
         container={this.getContainer}
@@ -342,6 +344,8 @@ MonthView.propTypes = {
   events: PropTypes.array.isRequired,
   date: PropTypes.instanceOf(Date),
   companyStartDay: PropTypes.number,
+  companyHoliday: PropTypes.array,
+  japaneseHoliday: PropTypes.array,
 
   min: PropTypes.instanceOf(Date),
   max: PropTypes.instanceOf(Date),

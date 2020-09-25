@@ -747,6 +747,8 @@ class Calendar extends React.Component {
     step: 30,
     length: 30,
     companyStartDay: 1,
+    companyHoliday: [],
+    japaneseHoliday: [],
 
     drilldownView: views.DAY,
 
