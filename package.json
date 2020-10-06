@@ -1,6 +1,6 @@
 {
   "name": "@zvc/react-big-calendar",
-  "version": "0.23.0",
+  "version": "0.23.1",
   "description": "Calendar! with events",
   "author": {
     "name": "Kakizaki Koki",
@@ -51,8 +51,7 @@
     "release": "rollout",
     "prepublishOnly": "yarn aws:login && npm run build",
     "aws:login": "aws codeartifact login --tool npm --repository attendance --domain zeevaa --domain-owner 285217652119 --profile workplace",
-    "prettier": "prettier '**/*js' !examples/bundle.js '!lib/**' --write ",
-    "precommit": "lint-staged"
+    "prettier": "prettier '**/*js' !examples/bundle.js '!lib/**' --write "
   },
   "lint-staged": {
     "src/**/*.js": "eslint",

@@ -37,7 +37,7 @@ class BackgroundCells extends React.Component {
   holidayCell(date) {
     const companyHoliday = this.props.companyHoliday
     const japaneseHoliday = this.props.japaneseHoliday
-    const seekHoliday = companyHoliday.find(holiday => moment(holiday).format('YYYY/MM/DD') === moment(date).format('YYYY/MM/DD'))
+    const seekHoliday = companyHoliday.find(holiday => moment(holiday.date).format('YYYY/MM/DD') === moment(date).format('YYYY/MM/DD'))
     const seekjapaneseHoliday = japaneseHoliday.find(holiday => moment(holiday).format('YYYY/MM/DD') === moment(date).format('YYYY/MM/DD'))
     if(seekHoliday){
       return false
@@ -106,7 +106,6 @@ class BackgroundCells extends React.Component {
                   className={clsx(
                     'rbc-day-bg',
                     className,
-                    // selected && 'rbc-selected-cell',
                     selected && dates.month(currentDate) === dates.month(date) && this.holidayCell(date) && 'rbc-selected-cell',
                     dates.eq(date, current, 'day') && 'rbc-today',
                     currentDate &&
