@@ -49,9 +49,9 @@
     "test": "npm run lint && jest",
     "tdd": "jest --watch",
     "release": "rollout",
-    "setScope": "npm config set @zvc:registry https://zeevaa-285217652119.d.codeartifact.ap-northeast-1.amazonaws.com/npm/test/",
-    "prepublishOnly": "yarn aws:login && yarn setScope && npm run build",
-    "aws:login": "aws codeartifact login --tool npm --repository test --domain zeevaa --domain-owner 285217652119 --profile workplace",
+    "prepublish": "yarn aws:login",
+    "prepublishOnly": "npm run build",
+    "aws:login": "aws codeartifact login --tool npm --repository attendance --domain zeevaa --domain-owner 285217652119 --profile workplace",
     "prettier": "prettier '**/*js' !examples/bundle.js '!lib/**' --write "
   },
   "lint-staged": {
